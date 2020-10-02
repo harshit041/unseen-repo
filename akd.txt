@@ -1,0 +1,1 @@
+Thw template you have used isnt much generic. Try to make it so
