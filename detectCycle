@@ -1,0 +1,76 @@
+//Program to detect the cycle in the undirected-graph.
+
+/*With the help of DFS we can detect whether the graph contain cycle or not.
+With the help of DFS; we detect whether graph contain any Back-edge or not,if graph contain any back-edge then cycle is present in 
+the graph.
+Back-edge is the edge which connects the current nodes to any of its ancestors but this ancestor is not the parent of that edge.
+To find the Back-edge to any of its ancestor keep a visited array and if there is a back edge to any visited node then there is 
+a cycle and return true.
+*/
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+bool checkCycle(vector<ll> adj_list[],ll nodes){
+	bool visited[nodes];
+	ll parent[nodes];
+	for(ll i=0;i<nodes;i++){
+		visited[i]=false;
+		parent[i]=-1;
+	}
+
+	stack<ll> s;
+	s.push(0);
+	visited[0]=true;
+	parent[0]=-1;
+
+	while(!s.empty()){
+		ll temp=s.top();
+		s.pop();
+
+		for(ll j=0;j<adj_list[temp].size();j++){
+			if(visited[adj_list[temp][j]]==false){
+				visited[adj_list[temp][j]]=true;
+				s.push(adj_list[temp][j]);
+				parent[adj_list[temp][j]]=temp;
+			}
+			else if(adj_list[temp][j]!=parent[temp] && parent[adj_list[temp][j]]!=temp){ //means back-edge is present 
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+int main(){
+	cout<<"Enter number of nodes-:";
+	ll nodes{0};
+	cin>>nodes;
+
+	vector<ll> adj_list[nodes];
+
+	cout<<"Enter the number of edges-:";
+	ll edges{0};
+	cin>>edges;
+
+	//representation of graph using the adjacency-list(i.e. using array of vector) 
+	for(ll i=0;i<edges;i++){
+		cout<<"Enter the end points of edge-"<<(i+1)<<"-:";
+		ll u{0};
+		ll v{0};
+		cin>>u>>v;
+		adj_list[u].push_back(v);
+		adj_list[v].push_back(u);
+	}
+
+	if(checkCycle(adj_list,nodes))
+		cout<<"Graph contain the cycle"<<endl;
+	else
+		cout<<"Graph does not contain the cycle"<<endl;
+
+}
